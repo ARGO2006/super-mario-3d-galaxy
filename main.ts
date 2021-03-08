@@ -36,5 +36,5 @@ mySprite = sprites.create(img`
 controller.moveSprite(mySprite, 100, 0)
 tiles.setTilemap(tilemap`level1`)
 mySprite.ay = 200
-mySprite.setPosition(5, 140)
+mySprite.setPosition(5, 160)
 scene.cameraFollowSprite(mySprite)
