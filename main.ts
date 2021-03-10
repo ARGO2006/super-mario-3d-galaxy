@@ -29,9 +29,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.pot, function (sprite, otherSpri
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Enemy)
-    pot.destroy()
+    otherSprite.destroy()
     animation.runImageAnimation(
-    mySprite,
+    mySprite3,
     [img`
         . . . . . e e e e e . . . . . 
         . . . . e e e e e e e . . . . 
@@ -104,6 +104,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.pot, function (sprite, otherSpri
     300,
     true
     )
+    mySprite3.setPosition(0, mySprite.y)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.coin, function (sprite, otherSprite) {
     info.changeScoreBy(1)
@@ -343,7 +344,24 @@ for (let value of tiles.getTilesByType(assets.tile`myTile8`)) {
     tiles.setTileAt(value, assets.tile`transparency16`)
 }
 for (let value of tiles.getTilesByType(assets.tile`myTile9`)) {
-    pot = sprites.create(, SpriteKind.pot)
-    tiles.placeOnTile(mySprite2, value)
+    pot = sprites.create(img`
+        . . f 7 7 7 7 7 7 7 7 7 7 f . . 
+        . f 7 7 7 7 f f f f 7 7 7 f . . 
+        f 7 7 7 f f f f f f f f 7 7 f . 
+        f 7 7 f f f f f f f f f 7 7 f . 
+        f 7 7 f f f f f f f f f 7 7 f . 
+        f 7 7 f f f f f f f f f 7 f f . 
+        f f 7 7 f f f f f f f 7 7 f . . 
+        . f f 7 7 7 7 7 7 7 7 7 f f . . 
+        . f f f 7 7 7 7 7 7 7 f f . . . 
+        . f 7 f f f f f f f f f f . . . 
+        . f 7 7 7 7 7 7 7 7 7 7 f . . . 
+        . f 7 7 7 7 7 7 7 7 7 7 f . . . 
+        . f 7 7 7 7 7 7 7 7 7 7 f . . . 
+        . f 7 7 7 7 7 7 7 7 7 7 f . . . 
+        . f 7 7 7 7 7 7 7 7 7 7 f . . . 
+        . f 7 7 7 7 7 7 7 7 7 7 f . . . 
+        `, SpriteKind.pot)
+    tiles.placeOnTile(pot, value)
     tiles.setTileAt(value, assets.tile`transparency16`)
 }
