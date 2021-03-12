@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const coin = SpriteKind.create()
     export const pot = SpriteKind.create()
+    export const bullet = SpriteKind.create()
 }
 let myEnemy: Sprite[] = []
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -116,6 +117,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.coin, function (sprite, otherSpr
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile5`, function (sprite, location) {
     game.over(false, effects.melt)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.bullet, function (sprite, otherSprite) {
+    info.changeLifeBy(-2)
+    bullet.destroy()
 })
 function startLevel () {
     if (current_level == 0) {
@@ -356,6 +361,35 @@ function startLevel () {
         tiles.placeOnTile(pot, value)
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
+    for (let value of tiles.getTilesByType(assets.tile`myTile11`)) {
+        bullet = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . c c c c c c c c c c c c . 
+            . . . c c c c c c c c c c c c . 
+            . . c c c c c c c c c c c c c 4 
+            . . c c c c c c c c c c c c c 4 
+            . c c f 1 c c c c c c c c c c 4 
+            . c 1 f 1 c c c c c c c c c c 4 
+            . b 1 1 c c 2 2 c c c c c c c 4 
+            . b b b b 1 2 2 c c c c c c b 4 
+            . . b b 1 2 1 b b b b b b b b . 
+            . . . 1 2 1 1 b b b b b b b b 4 
+            . . . . 1 b b b b b b b b b b 4 
+            . . . . . . b b b b b b b b b 4 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.bullet)
+        tiles.placeOnTile(bullet, value)
+        tiles.setTileAt(value, assets.tile`transparency16`)
+        animation.runMovementAnimation(
+        bullet,
+        "c 0 -100 0 100 0 0",
+        2000,
+        true
+        )
+        bullet.startEffect(effects.fire)
+    }
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy()
@@ -367,6 +401,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let pot: Sprite = null
 let mySprite2: Sprite = null
+let bullet: Sprite = null
 let mySprite3: Sprite = null
 let current_level = 0
 let mySprite: Sprite = null
@@ -393,6 +428,7 @@ mySprite = sprites.create(img`
     . . . f f f f f f f f . . . 
     `, SpriteKind.Player)
 controller.moveSprite(mySprite, 100, 0)
+mySprite.setFlag(SpriteFlag.BounceOnWall, false)
 scene.setBackgroundColor(9)
 scene.setBackgroundImage(img`
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -516,7 +552,7 @@ scene.setBackgroundImage(img`
     cccccccccccccccccccccccccccccccccccc1dddddddddddddddddddddddd1ccccccccccccccccccccccccccccccccccccc1ddddddddddd1cccccccccccccccccccccccccccccccccccccccc1ddddddd
     cccccccccccccccccccccccccccccccccc11dddddddddddddddddddddddd1cccccccccccccccccccccccccccccccccccccc1dddddddddddd1cccccccccccccccccccccccccccccccccccccccc11ddddd
     `)
-current_level = 0
+current_level = 2
 startLevel()
 game.onUpdate(function () {
     mySprite.setImage(img`
@@ -615,13 +651,38 @@ game.onUpdate(function () {
     } else {
     	
     }
-    if (mySprite.isHittingTile(CollisionDirection.Left) || mySprite.isHittingTile(CollisionDirection.Right)) {
+    if ((mySprite.isHittingTile(CollisionDirection.Left) || mySprite.isHittingTile(CollisionDirection.Right)) && mySprite.vy >= 0) {
         mySprite.vy = 0
         mySprite.ay = 0
+        mySprite.setImage(img`
+            ............ee..
+            ...........e11e.
+            ..........e1111e
+            .......fffff111e
+            .....ff22252f1e.
+            ....f2244d51fef.
+            ...f4244ffffff..
+            ..f444fffffffff.
+            ..fdfffbfbfbcf..
+            .fdedfbdfdfdee..
+            .fbedffddddddde.
+            .ffbdfddfbbbbbe.
+            ..ffbbdfffffff..
+            ...eee2ebffff...
+            ..ee11e2ee8.....
+            ..e1111e6998....
+            ..e111168ff18ff.
+            ...e11e6f5fff5ff
+            ...eee68fefffeff
+            ....886fefffeff.
+            ......8fefffeff.
+            ........ff..ff..
+            `)
     } else {
         mySprite.ay = 200
     }
-    if (mySprite.vx < 0) {
+    if (mySprite.vx < 0 || mySprite.isHittingTile(CollisionDirection.Left)) {
         mySprite.image.flipX()
+        mySprite.setImage(mySprite.image)
     }
 })
