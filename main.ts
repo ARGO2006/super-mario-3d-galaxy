@@ -552,7 +552,7 @@ scene.setBackgroundImage(img`
     cccccccccccccccccccccccccccccccccccc1dddddddddddddddddddddddd1ccccccccccccccccccccccccccccccccccccc1ddddddddddd1cccccccccccccccccccccccccccccccccccccccc1ddddddd
     cccccccccccccccccccccccccccccccccc11dddddddddddddddddddddddd1cccccccccccccccccccccccccccccccccccccc1dddddddddddd1cccccccccccccccccccccccccccccccccccccccc11ddddd
     `)
-current_level = 2
+current_level = 0
 startLevel()
 game.onUpdate(function () {
     mySprite.setImage(img`
