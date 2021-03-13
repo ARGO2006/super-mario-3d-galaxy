@@ -13,6 +13,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, l
     current_level += 1
     startLevel()
 })
+scene.onOverlapTile(SpriteKind.Enemy, assets.tile`myTile5`, function (sprite, location) {
+    sprite.destroy()
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.pot, function (sprite, otherSprite) {
     mySprite3 = sprites.create(img`
         . . . . . . . . . . . . . . . . 
