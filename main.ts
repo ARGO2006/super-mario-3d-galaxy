@@ -140,7 +140,6 @@ function startLevel () {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
     scene.cameraFollowSprite(mySprite)
-    info.setLife(5)
     for (let value of myEnemy) {
         value.destroy()
     }
@@ -557,6 +556,7 @@ scene.setBackgroundImage(img`
     `)
 current_level = 0
 startLevel()
+info.setLife(5)
 game.onUpdate(function () {
     mySprite.setImage(img`
         . . . . . . 4 4 4 4 4 . . . 
